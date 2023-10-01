@@ -1,0 +1,6 @@
+**/*.filters
+**/*.user
+**/x64/
+**/.vs/
+**/out/
+build-*
