@@ -30,7 +30,6 @@ void Stopwatch::ResetStopwatch()
     laps_count = 0;
     time_lap_prev = 0;
     emit sig_SendResetSig();
-    timer->stop();
 }
 
 void Stopwatch::RecordLapTime()

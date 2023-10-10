@@ -13,6 +13,7 @@ MainWindow::MainWindow(QWidget *parent)
     ui->pb_start_stop->setText("Старт");
     ui->pb_start_stop->setCheckable(true);
     ui->pb_lap->setText("Круг");
+    ui->pb_lap->setDisabled(true);
     ui->pb_reset->setText("Очистить");
     QObject::connect(stopwatch, &Stopwatch::sig_TimerChanged, this, &MainWindow::RsvUpdateSig);
     QObject::connect(stopwatch, &Stopwatch::sig_SendToggleSig, this, &MainWindow::RsvToggleSig);
@@ -45,9 +46,9 @@ void MainWindow::RsvToggleSig()
 void MainWindow::RsvResetSig()
 {
     ui->lb_output->setText("0:0.0");
-    ui->pb_start_stop->setChecked(false);
-    ui->pb_start_stop->setText("Старт");
-    ui->pb_lap->setDisabled(true);
+    //ui->pb_start_stop->setChecked(false);
+    //ui->pb_start_stop->setText("Старт");
+    //ui->pb_lap->setDisabled(true);
 }
 
 void MainWindow::RsvRecLapTimeSig()
