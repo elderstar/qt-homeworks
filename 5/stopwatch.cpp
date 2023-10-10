@@ -24,12 +24,13 @@ void Stopwatch::ToggleStopwatch()
 }
 
 void Stopwatch::ResetStopwatch()
-{
+{ 
     time = 0;
     time_lap = 0;
     laps_count = 0;
     time_lap_prev = 0;
     emit sig_SendResetSig();
+    timer->stop();
 }
 
 void Stopwatch::RecordLapTime()
