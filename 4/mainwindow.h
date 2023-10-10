@@ -3,6 +3,7 @@
 
 #include <QMainWindow>
 #include "Games.h"
+#include <QTimer>
 
 QT_BEGIN_NAMESPACE
 namespace Ui { class MainWindow; }
@@ -16,6 +17,7 @@ public:
     MainWindow(QWidget *parent = nullptr);
     ~MainWindow();
     void changeProgress(int val);
+    void fakeInstallation();
 private slots:
 
     void on_pushButton_toggled(bool checked);
@@ -31,5 +33,6 @@ private slots:
 private:
     Ui::MainWindow *ui;
     Games *games;
+    QTimer *timer;
 };
 #endif // MAINWINDOW_H

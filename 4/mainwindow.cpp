@@ -13,6 +13,8 @@ MainWindow::MainWindow(QWidget *parent)
     ui->comboBox->addItem("Выбери игру для установки");
 
     games = new Games();
+    timer = new QTimer(this);
+
     auto games_list = games->getGames();
 
     for(const auto& game:games_list)
@@ -26,6 +28,7 @@ MainWindow::MainWindow(QWidget *parent)
     ui->progressBar->setMaximum(100);
     ui->pb_install->setText("Установить");
     ui->lb_status->hide();
+    QObject::connect(timer, &QTimer::timeout, this, &MainWindow::fakeInstallation);
 }
 
 MainWindow::~MainWindow()
@@ -34,11 +37,28 @@ MainWindow::~MainWindow()
     delete games;
 }
 
+void MainWindow::fakeInstallation()
+{
+    if(ui->progressBar->value() < 100)
+    {
+        changeProgress(10);
+    }else
+    {
+        ui->lb_status->setText("Игра установлена!");
+        ui->lb_status->show();
+        timer->stop();
+    }
+}
+
 void MainWindow::changeProgress(int val)
 {
     int new_val = ui->progressBar->value()+val;
 
     ui->progressBar->setValue(new_val <= 100 ? new_val : 0);
+    if(ui->progressBar->value() == 0)
+    {
+        ui->lb_status->hide();
+    }
 }
 
 
@@ -62,13 +82,12 @@ void MainWindow::on_comboBox_currentIndexChanged(int index)
 
 void MainWindow::on_pb_install_clicked()
 {
-    while(ui->progressBar->value() < 100)
+    if(!timer->isActive())
     {
-        changeProgress(10);
-        QThread::sleep(1);
+        timer->start(500);
     }
-    ui->lb_status->setText("Игра установлена!");
-    ui->lb_status->show();
+
+    fakeInstallation();
 }
 
 
