@@ -8,6 +8,10 @@ MainWindow::MainWindow(QWidget *parent)
     ui->setupUi(this);
     ui->pb_clearResult->setCheckable(true);
 
+    chart = new QChart();
+    chart_view = new QChartView(chart);
+    series = new QLineSeries(this);
+
     QObject::connect(this, &MainWindow::sig_chartReady, this, &MainWindow::on_chart_ready);
 }
 
@@ -186,14 +190,26 @@ void MainWindow::on_pb_path_clicked()
 
 void MainWindow::on_chart_ready()
 {
-    chart = new QChart();
+
     chart->addSeries(series);
     chart->setTitle("Chart Title");
     chart->createDefaultAxes();
-    chart_view = new QChartView(chart);
 
     chart_view->resize(400, 300);
     chart_view->show();
+}
+
+/*!
+ * \brief Метод очищает данные на графике
+ * \param chart - указатель на график
+ */
+void MainWindow::ClearGraph(QChart *chart)
+{
+    if(!chart->series().isEmpty())
+    {
+        series->clear();
+        chart->removeSeries(series);
+    }
 }
 
 /****************************************************/
@@ -230,7 +246,7 @@ void MainWindow::on_pb_start_clicked()
         numberSelectChannel = 0xED;
     }
 
-
+    ClearGraph(chart);
     auto read = [&]{ return ReadFile(pathToFile, numberSelectChannel); };
     auto process = [&](QVector<uint32_t> res){ return ProcessFile(res);};
     auto findMax = [&](QVector<double> res){
@@ -238,7 +254,6 @@ void MainWindow::on_pb_start_clicked()
                                                 mins = FindMin(res);
                                                 DisplayResult(mins, maxs);
 
-                                                series = new QLineSeries(this);
                                                 series->setName("Line Test");
 
                                                 //дискретизации данных составляет 1000 выборок в сек.

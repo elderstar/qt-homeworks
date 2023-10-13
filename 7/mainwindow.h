@@ -37,7 +37,7 @@ public:
     QVector<double> FindMin(QVector<double> resultData);
     //Метод отображает результаты
     void DisplayResult(QVector<double> mins, QVector<double> maxs);
-
+    void ClearGraph(QChart* chart);
 signals:
     void sig_chartReady();
 
