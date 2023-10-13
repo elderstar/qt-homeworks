@@ -47,6 +47,7 @@ private:
     DbData *dataDb;
     DataBase* dataBase;
     QMessageBox* msg;
+    QSqlTableModel *empty_model;
 
     QString request = "";
 

@@ -76,6 +76,11 @@ void DataBase::RequestToDB(QString request, QTableView *view, int requestType)
             break;
         }
         case requestAllFilms:{
+            if(table_model != nullptr)
+            {
+                delete table_model;
+                table_model = nullptr;
+            }
             table_model = new QSqlTableModel(nullptr, *dataBase);
             table_model->setTable("film");
             table_model->select();

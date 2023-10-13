@@ -58,7 +58,7 @@ signals:
 private:
 
     QSqlDatabase* dataBase;
-    QSqlTableModel *table_model;
+    QSqlTableModel *table_model = nullptr;
     QSqlQueryModel *query_model;
 };
 

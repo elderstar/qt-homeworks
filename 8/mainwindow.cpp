@@ -18,7 +18,7 @@ MainWindow::MainWindow(QWidget *parent)
     dataDb = new DbData(this);
     dataBase = new DataBase(this);
     msg = new QMessageBox(this);
-
+    empty_model = new QSqlTableModel(this);
     //Установим размер вектора данных для подключения к БД
     dataForConnect.resize(NUM_DATA_FOR_CONNECT_TO_DB);
 
@@ -135,7 +135,7 @@ void MainWindow::ScreenDataFromDB(QSqlTableModel *model, int typeRequest)
     ui->tableView->setModel(model);
     ui->tableView->setEditTriggers(QAbstractItemView::NoEditTriggers);
     ui->tableView->hideColumn(0);
-    for(int i = 3; i < 14; ++i)
+    for(int i = 3; i < ui->tableView->model()->columnCount(); ++i)
     {
         ui->tableView->hideColumn(i);
     }
@@ -164,7 +164,6 @@ void MainWindow::ReceiveStatusConnectionToDB(bool status)
 
 void MainWindow::on_pb_clear_clicked()
 {
-    QSqlTableModel *empty_model = new QSqlTableModel(this);
     ui->tableView->setModel(empty_model);
 }
 
