@@ -14,8 +14,6 @@ MainWindow::MainWindow(QWidget *parent)
     timer       =   new QTimer(this);
     msg_box     =   new QMessageBox(this);
 
-    toggleConnStatus();
-
     ui->pb_load_flights->setText("Cписок рейсов");
     ui->pb_load_flights->setDisabled("true");
     ui->pb_show_load->setText("Загруженность");
@@ -31,6 +29,7 @@ MainWindow::MainWindow(QWidget *parent)
     connect(db, &DB::sig_returnDates, this, &MainWindow::slot_initCalendar);
     connect(db, &DB::sig_sendConnectionStatus, this, &MainWindow::slot_receiveConnectionStatus);
     connect(db, &DB::sig_sendDataFromDB, this, &MainWindow::slot_receiveDataFromDB);
+    toggleConnStatus();
 }
 
 MainWindow::~MainWindow()
@@ -48,8 +47,6 @@ void MainWindow::slot_receiveConnectionStatus(bool status)
             return db->getDates();
         };
         auto dates_result = QtConcurrent::run(get_dates_task);
-    }else{
-        tryToConnect();
     }
 }
 
@@ -117,6 +114,7 @@ void MainWindow::tryToConnect()
 void MainWindow::slot_Timer()
 {
     timer->stop();
+    qDebug() << "stop timer";
     tryToConnect();
 }
 
@@ -138,11 +136,15 @@ void MainWindow::toggleConnStatus()
             db_err_text += "\n Пробую соединиться снова...";
             msg_box->setText(db_err_text);
             msg_box->exec();
+            qDebug() << "msg_box exec";
         }
 
         if (!msg_box->isVisible()){
             timer->start(RECONNECT_INTERVAL * 1000);
+            qDebug() << "start timer";
         }
+
+        qDebug() << "exit toggleConnStatus func";
     }
 }
 

@@ -44,8 +44,15 @@ else()
         )
     endif()
 endif()
-
-target_link_libraries(QT-Diplom PRIVATE Qt${QT_VERSION_MAJOR}::Widgets Qt${QT_VERSION_MAJOR}::Sql Qt${QT_VERSION_MAJOR}::Charts)
+target_link_directories(${PROJECT_NAME} PUBLIC ${CMAKE_CURRENT_SOURCE_DIR}/PG_Libs)
+target_link_libraries(QT-Diplom PRIVATE Qt${QT_VERSION_MAJOR}::Widgets 
+Qt${QT_VERSION_MAJOR}::Sql 
+Qt${QT_VERSION_MAJOR}::Charts
+libcrypto-3-x64
+libiconv-2
+libintl-9
+libpq
+libssl-3-x64)
 
 set_target_properties(QT-Diplom PROPERTIES
     MACOSX_BUNDLE_GUI_IDENTIFIER my.example.com
